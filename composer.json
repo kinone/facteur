@@ -1,0 +1,13 @@
+{
+    "name": "kinone/facteur",
+    "description": "SDK for QiYe WeiXin",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "zhenhao",
+            "email": "phpcandy@163.com"
+        }
+    ],
+    "require": {}
+}
