@@ -16,8 +16,6 @@ class Postman extends AbstractClient
      * @param Message $msg
      * @return Response
      * @throws Exception
-     * @throws GuzzleException
-     * @throws InvalidArgumentException
      */
     public function send(Message $msg)
     {

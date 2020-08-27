@@ -10,6 +10,7 @@ namespace Kinone\Facteur\Weixin;
 use GuzzleHttp\Exception\GuzzleException;
 use Kinone\Facteur\Facteur;
 use Psr\SimpleCache\InvalidArgumentException;
+use Throwable;
 
 abstract class AbstractClient
 {
@@ -45,46 +46,52 @@ abstract class AbstractClient
      * @param mixed $option
      * @return Response
      * @throws Exception
-     * @throws GuzzleException
-     * @throws InvalidArgumentException
      */
     protected function request(string $method, string $uri, $option = null): Response
     {
         $response = null;
 
-        $url = $this->genUrl($uri);
-        $tryCount = 2;
+        try {
+            $url = $this->genUrl($uri);
+            $tryCount = 2;
 
-        while ($tryCount > 0) {
-            if ($method == 'GET') {
-                $url .= '&' . http_build_query($option);
-                $response = $this->facteur->httpClient()->get($url);
-            } elseif ($method == 'POST') {
-                $response = $this->facteur->httpClient()->post($url, [
-                    'headers' => [
-                        'Content-Type: application/json',
-                    ],
-                    'body'    => (string)$option,
-                ]);
+            while ($tryCount > 0) {
+                if ($method == 'GET') {
+                    $url .= '&' . http_build_query($option);
+                    $response = $this->facteur->httpClient()->get($url);
+                } elseif ($method == 'POST') {
+                    $response = $this->facteur->httpClient()->post($url, [
+                        'headers' => [
+                            'Content-Type: application/json',
+                        ],
+                        'body'    => (string)$option,
+                    ]);
+                }
+
+                if (!$response) {
+                    throw new Exception(403);
+                }
+
+                if (($code = $response->getStatusCode()) != 200) {
+                    throw new Exception($code);
+                }
+
+                $res = new Response($response->getBody());
+
+                if ($res->code() == 42001) {// token过期
+                    $this->facteur->getToken(true);
+                    $tryCount -= 1;
+                    continue;
+                }
+
+                return $res;
             }
-
-            if (!$response) {
-                throw new Exception(403);
-            }
-
-            if (($code = $response->getStatusCode()) != 200) {
-                throw new Exception($code);
-            }
-
-            $res = new Response($response->getBody());
-
-            if ($res->code() == 42001) {// token过期
-                $this->facteur->getToken(true);
-                $tryCount -= 1;
-                continue;
-            }
-
-            return $res;
+        } catch (InvalidArgumentException $ex) {
+            $this->facteur->logger()->error($ex->getMessage());
+            throw new Exception(2);
+        } catch (Throwable $ex) {
+            $this->facteur->logger()->error($ex->getMessage());
+            throw new Exception(3);
         }
 
         throw new Exception(1);
@@ -95,10 +102,8 @@ abstract class AbstractClient
      * @param array $query
      * @return Response
      * @throws Exception
-     * @throws GuzzleException
-     * @throws InvalidArgumentException
      */
-    public function get(string $url, array $query = [])
+    protected function get(string $url, array $query = [])
     {
         return $this->request('GET', $url, $query);
     }
@@ -108,10 +113,8 @@ abstract class AbstractClient
      * @param $body
      * @return Response
      * @throws Exception
-     * @throws GuzzleException
-     * @throws InvalidArgumentException
      */
-    public function post(string $url, string $body)
+    protected function post(string $url, string $body)
     {
         return $this->request('POST', $url, $body);
     }

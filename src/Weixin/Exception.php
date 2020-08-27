@@ -10,7 +10,9 @@ namespace Kinone\Facteur\Weixin;
 class Exception extends \Exception
 {
     private static $message = [
-        1    => 'system error',
+        1    => 'impossible error',
+        2    => 'cache error',
+        3    => 'http client error',
         403  => 'forbidden',
         404  => 'not found',
         502  => 'bad gateway',

@@ -81,8 +81,6 @@ class Chat extends AbstractClient
     /**
      * @return Response
      * @throws Exception
-     * @throws GuzzleException
-     * @throws InvalidArgumentException
      */
     public function create()
     {
@@ -93,8 +91,6 @@ class Chat extends AbstractClient
      * @param $id
      * @return Response
      * @throws Exception
-     * @throws GuzzleException
-     * @throws InvalidArgumentException
      */
     public function info($id)
     {
@@ -105,8 +101,6 @@ class Chat extends AbstractClient
      * @param Message $message
      * @return Response
      * @throws Exception
-     * @throws GuzzleException
-     * @throws InvalidArgumentException
      */
     public function send(Message $message)
     {
