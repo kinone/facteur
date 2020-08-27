@@ -8,9 +8,7 @@
 
 namespace Kinone\Facteur\Weixin;
 
-use GuzzleHttp\Exception\GuzzleException;
 use Kinone\Facteur\Weixin\Chat\Message;
-use Psr\SimpleCache\InvalidArgumentException;
 
 class Chat extends AbstractClient
 {

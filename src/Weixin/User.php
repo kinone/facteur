@@ -8,9 +8,6 @@
 
 namespace Kinone\Facteur\Weixin;
 
-use GuzzleHttp\Exception\GuzzleException;
-use Psr\SimpleCache\InvalidArgumentException;
-
 class User extends AbstractClient
 {
     /**

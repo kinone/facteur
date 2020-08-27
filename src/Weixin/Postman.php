@@ -7,9 +7,6 @@
 
 namespace Kinone\Facteur\Weixin;
 
-use GuzzleHttp\Exception\GuzzleException;
-use Psr\SimpleCache\InvalidArgumentException;
-
 class Postman extends AbstractClient
 {
     /**
