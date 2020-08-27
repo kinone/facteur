@@ -38,14 +38,14 @@ class Common
     }
 
     /**
-     * @return string
+     * @return Response
      * @throws Exception
      * @throws GuzzleException
      */
-    public function getToken(): string
+    public function getToken(): Response
     {
         $uri = self::WX_API . 'gettoken?' . http_build_query([
-                'corpID' => $this->corpID,
+                'corpID'     => $this->corpID,
                 'corpSecret' => $this->corpSecret,
             ]);
 
@@ -54,8 +54,6 @@ class Common
             throw new Exception($code);
         }
 
-        $res =  new Response($response->getBody());
-
-        return $res->get('access_token');
+        return new Response($response->getBody());
     }
 }

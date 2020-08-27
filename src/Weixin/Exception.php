@@ -10,10 +10,11 @@ namespace Kinone\Facteur\Weixin;
 class Exception extends \Exception
 {
     private static $message = [
-        403 => 'forbidden',
-        404 => 'not found',
-        502 => 'bad gateway',
-        504 => 'gateway timeout',
+        1    => 'system error',
+        403  => 'forbidden',
+        404  => 'not found',
+        502  => 'bad gateway',
+        504  => 'gateway timeout',
         1001 => 'parse response error',
     ];
 

@@ -32,7 +32,7 @@ class Message
     /**
      * @var string
      */
-    private $type = 'text';
+    private $msgType = 'text';
 
     /**
      * @var array
@@ -67,14 +67,14 @@ class Message
         return $this;
     }
 
-    public function setType($type)
+    public function type($type)
     {
-        $this->type = $type;
+        $this->msgType = $type;
 
         return $this;
     }
 
-    public function setContent(array $content)
+    public function content(array $content)
     {
         $this->content = $content;
 
@@ -85,13 +85,13 @@ class Message
     {
         $message = [
             'agentid' => $this->agentID,
-            'touser' => implode('|', $this->toUser),
+            'touser'  => implode('|', $this->toUser),
             'toparty' => implode('|', $this->toParty),
-            'totag' => implode('|', $this->toTag),
-            'msgtype' => $this->type,
+            'totag'   => implode('|', $this->toTag),
+            'msgtype' => $this->msgType,
         ];
 
-        $message[$this->type] = $this->content;
+        $message[$this->msgType] = $this->content;
 
         return json_encode($message);
     }

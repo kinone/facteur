@@ -49,6 +49,11 @@ class Response
         return $this->data[$name] ?? $default;
     }
 
+    public function data()
+    {
+        return $this->data;
+    }
+
     public function code(): int
     {
         return intval($this->code);
