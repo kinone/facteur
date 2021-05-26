@@ -9,7 +9,7 @@ namespace Kinone\Facteur\Weixin;
 
 class Exception extends \Exception
 {
-    private static $message = [
+    private static $messages = [
         1    => 'impossible error',
         2    => 'cache error',
         3    => 'http client error',
@@ -22,7 +22,7 @@ class Exception extends \Exception
 
     public function __construct($code, $message = '', \Throwable $prev = null)
     {
-        $message = self::$message[$code] ?? $message;
+        $message = self::$messages[$code] ?? $message;
 
         parent::__construct($message, $code, $prev);
     }
